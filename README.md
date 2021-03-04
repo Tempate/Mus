@@ -10,7 +10,7 @@ In particular, a friend asked me what the odds were of a certain hand winning an
 
 ### About the game
 
-Briefly, it's a four-player game played in pairs. It consists of four rounds: grande (big), chica (small), pares (pairs) and juego (game). Grande is about who has the highest hand; chica is about how has the smallest; pares is about who has the best pairs, and juego is about whose cards sum to the most. Each of them has different ways to punctuate the hands, and, being a card-game, the point is to bluff your way through and try to win hands you wouldn't win cards-up.
+Briefly, it's a four-player game played in pairs. It consists of four rounds: grande (big), chica (small), pares (pairs) and juego (game). Grande is about who has the highest hand; chica is about how has the smallest; pares is about who has the best pairs, and juego is about whose cards add up to the highest number. Each of them has different punctuation methods. The point is to bluff your way through and try to win hands you should't win.
 
 Betting occurs in all rounds; stones are taken from the pot until one of the teams reaches 40 (or 30) and wins.
 
