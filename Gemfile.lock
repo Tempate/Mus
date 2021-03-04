@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    json (2.5.1)
+    slop (4.8.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  json (~> 2.5)
+  slop (~> 4.8)
+
+BUNDLED WITH
+   2.1.2
