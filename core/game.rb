@@ -55,11 +55,11 @@ def calc_score_grande(hand)
   # Use values that make a high-card's score unreachable with lower scores.
   # NOTE: We can't get away by only multiplying by 4 because we would need 
   # to value A as 1, and 5^6 < 4^7.
-  pares_card_grande = {
+  grande_card_values = {
     "A" => 0, "4" => 1, "5" => 5, "6" => 25, "7" => 125, "J" => 625, "Q" => 3125, "K" => 15625
   }
 
-  hand.sum{ |card| pares_card_grande[card] }
+  hand.sum{ |card| grande_card_values[card] }
 end
 
 
@@ -71,20 +71,15 @@ def calc_score_pares(hand)
     "A" => 1, "4" => 2, "5" => 4, "6" => 8, "7" => 16, "J" => 32, "Q" => 64, "K" => 128
   }
 
-  repetitions = count_repetitions(hand)
+  repetitions = hand.tally.reject{ |card, count| count == 1 }
   
   # Use a sufficiently large factor to avoid branching
   # The factor has to be enough so that the highest score with 
   # the preceeding, lower factor gets a lower score.
-  factor = 128 ** (repetitions.sum{ |_, count| count * (count / 2)} - 2)
+  factor = 128 ** ((repetitions.values.inject(:+) || 0) - 2)
   
   # Multiply by count / 2 to account for quads
   repetitions.sum{ |card, count| pares_card_values[card] * (count / 2) } * factor
-end
-
-
-def count_repetitions(hand)
-  hand.tally.reject{ |card, count| count == 1 }
 end
 
 
