@@ -46,13 +46,8 @@ end
 
 def print_score(score)
   score.each{ |phase, stats|
-    print_phase(phase, stats[:win_rate], stats[:error])
+    printf("  %s:\t%.2f +- %.4f\n", phase.capitalize, stats[:win_rate].round(2), stats[:error].round(4))
   }
-end
-
-
-def print_phase(phase, win_rate, error)
-  printf("  %s:\t%.2f +- %.4f\n", phase.capitalize, win_rate.round(2), error.round(4))
 end
 
 
