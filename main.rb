@@ -22,7 +22,7 @@ require 'slop'
 require 'json'
 
 require_relative 'core/frontend.rb'
-require_relative 'core/play.rb'
+require_relative 'core/game.rb'
 
 
 $options = Slop.parse do |option|
