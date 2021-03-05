@@ -21,7 +21,8 @@ require 'bundler/setup'
 require 'slop'
 require 'json'
 
-require_relative 'api/mus.rb'
+require_relative 'api/frontend.rb'
+require_relative 'api/play.rb'
 
 
 $options = Slop.parse do |option|

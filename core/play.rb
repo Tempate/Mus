@@ -131,74 +131,39 @@ def play_games()
   scores = 4.times.map{ {"grande" => 0.0, "chica" => 0.0, "pares" => 0.0, "juego" => 0.0} }
 
   $conf["number_of_games"].times {
-    hands = deal_hands(generate_deck, $conf["hands"])
-    round = play(hands)
+    score = play_game
 
-    if $options.verbose?
-      puts hands.to_s
-      puts round.to_s
-    end
-
-    round.each{ |phase, player|
+    score.each{ |phase, player|
       scores[player][phase] += 1 unless player == -1
     }
   }
 
+  normalize(scores)
+end
+
+
+def play_game()
+  hands = deal_hands(generate_deck, $conf["hands"])
+  score = play(hands)
+
+  if $options.verbose?
+    puts hands.to_s
+    puts score.to_s
+  end
+
+  score
+end
+
+
+def normalize(scores)
+  calc_std = ->(xs, mean, n) { Math.sqrt(xs * (1 - mean)**2 + (n - xs) * mean**2) / n }
+
   scores.map.with_index{ |player, index|
     player.map{ |phase, wins|
       mean = wins / $conf["number_of_games"]
-      std = Math.sqrt(wins * (1 - mean)**2 + ($conf["number_of_games"] - wins) * mean**2) / $conf["number_of_games"]
+      std = calc_std.call(wins, mean, $conf["number_of_games"])
       
       [phase, {:win_rate => mean, :error => 2 * std}]    
     }.to_h
   }
-end
-
-
-def print_stats(scores)
-  puts
-
-  if $options.join?
-    (0..1).each{ |i|
-      print_players([i, i+2])
-
-      scores[i].each{ |phase, stats|
-        fellow = scores[i+2][phase]
-
-        win_rate = stats[:win_rate] + fellow[:win_rate]
-        error = stats[:error] + fellow[:error]
-        
-        print_phase(phase, win_rate, error)
-      }
-
-      puts
-    }
-
-  else
-    scores.each_with_index{ |player, index|
-      print_players([index])
-  
-      player.each{ |phase, stats|
-        print_phase(phase, stats[:win_rate], stats[:error])
-      }
-
-      puts
-    }
-  end
-end
-
-
-def print_players(indexes)
-  msg = (indexes[0] + 1).to_s + ".\t" 
-  
-  indexes.each{ |index|
-    msg += $conf["hands"][index].join(", ")
-  }
-
-  puts msg  
-end
-
-
-def print_phase(phase, win_rate, error)
-  printf("  %s:\t%.2f +- %.4f\n", phase.capitalize, win_rate.round(2), error.round(4))
 end
