@@ -30,14 +30,14 @@ def remove_cards_from_deck(deck, cards)
 end
 
 
-def deal_hands(deck, hands)
+def deal_hands(deck, hands, hand_size)
   remove_cards_from_deck(deck, hands.flatten)
 
-  hands.map{ |hand| 
-    # Hands can be given initial values for some of their cards
-    # We're assuming that when a user says a hand has a certain card
-    # he implies the other cards weren't that card.
-    missing_cards = pick_hand($options.exclusive? ? deck : (deck - hand), 4 - hand.length)
+  hands.map.with_index{ |hand, index|
+    # When exclusive mode is off and a user says a hand has a certain card
+    # he implies the other cards in that hand are different from the specified card.
+    deck_to_use = $options[:exclusive] ? deck : (deck - hand)
+    missing_cards = pick_hand(deck_to_use, hand_size - hand.length)
     
     remove_cards_from_deck(deck, missing_cards)
 
@@ -72,7 +72,7 @@ def calc_score_pares(hand)
   }
 
   repetitions = hand.tally.reject{ |card, count| count == 1 }
-  
+ 
   # Use a sufficiently large factor to avoid branching
   # The factor has to be enough so that the highest score with 
   # the preceeding, lower factor gets a lower score.
@@ -138,7 +138,7 @@ end
 
 
 def play_game()
-  hands = deal_hands(generate_deck, $conf["hands"])
+  hands = deal_hands(generate_deck, $conf["hands"], 4)
   score = play(hands)
 
   if $options.verbose?
